@@ -60,4 +60,9 @@ class Apuesta {
 		val ganador = new Random().nextInt(37)
 		resultado = tipo.chequearApuesta(ganador, this)
 	}
+	
+	def getTiposPosibles() {
+		#[new ApuestaPleno, new ApuestaDocena]
+	}
+
 }
