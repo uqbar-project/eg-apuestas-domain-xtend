@@ -2,8 +2,8 @@ package ar.edu.apuestas
 
 import java.math.BigDecimal
 import java.util.List
-import org.uqbar.commons.model.UserException
-import org.uqbar.commons.utils.Observable
+import org.uqbar.commons.model.annotations.Observable
+import org.uqbar.commons.model.exceptions.UserException
 
 @Observable
 abstract class TipoApuesta {

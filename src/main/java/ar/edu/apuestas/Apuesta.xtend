@@ -4,10 +4,10 @@ import java.math.BigDecimal
 import java.util.Date
 import java.util.Random
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.uqbar.commons.model.UserException
-import org.uqbar.commons.utils.TransactionalAndObservable
-
-import static org.uqbar.commons.model.ObservableUtils.*
+import org.uqbar.commons.model.annotations.Dependencies
+import org.uqbar.commons.model.annotations.TransactionalAndObservable
+import org.uqbar.commons.model.exceptions.UserException
+import org.uqbar.commons.model.utils.ObservableUtils
 
 @TransactionalAndObservable
 @Accessors
@@ -20,30 +20,12 @@ class Apuesta {
 
 	val hoy = new Date()
 	
-	def isPuedeJugar() {
+	@Dependencies("valorApostado", "monto", "tipo", "fecha")
+	def getPuedeJugar() {
 		fecha != null && fecha.after(hoy) 
 			&& monto != null && monto > BigDecimal.ZERO
 			&& tipo != null
 			&& valorApostado != null
-	}
-
-	def void setFecha(Date unaFecha) {
-		this.fecha = unaFecha
-		cambioPuedeApostar
-	}
-	
-	def void setTipo(TipoApuesta tipoApuesta) {
-		this.tipo = tipoApuesta
-		cambioPuedeApostar
-	}
-	
-	def void setValorApostado(Object valor) {
-		this.valorApostado = valor
-		cambioPuedeApostar
-	}
-	
-	def cambioPuedeApostar() {
-		firePropertyChanged(this, "puedeJugar", puedeJugar)
 	}
 
 	def void setMonto(BigDecimal unMonto) {
@@ -51,7 +33,7 @@ class Apuesta {
 			throw new UserException("El monto debe ser positivo.")
 
 		this.monto = unMonto
-		cambioPuedeApostar
+		ObservableUtils.firePropertyChanged(this, "monto", this.monto)
 	}
 
 	def jugar() {
