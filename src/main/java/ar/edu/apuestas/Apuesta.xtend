@@ -33,7 +33,7 @@ class Apuesta {
 			throw new UserException("El monto debe ser positivo.")
 
 		this.monto = unMonto
-		ObservableUtils.firePropertyChanged(this, "monto", this.monto)
+//		ObservableUtils.firePropertyChanged(this, "monto", this.monto)
 	}
 
 	def jugar() {

@@ -7,23 +7,17 @@ import org.uqbar.commons.model.exceptions.UserException
 
 @Observable
 abstract class TipoApuesta {
-	override toString() {
-		this.class.simpleName.substring(7)
-	}
-
 	def List<Object> getValoresPosibles()
+	def int montoMinimo()
+	def int ganancia()
+	def String getNombre()
+	def boolean esGanador(int ganador, Object valorApostado)
 
 	def validarMontoMinimo(BigDecimal monto) {
 		if (monto < new BigDecimal(montoMinimo)) {
 			throw new UserException('''El monto minimo para una apuesta «this» es «montoMinimo»''')
 		}
 	}
-
-	def int montoMinimo()
-
-	def boolean esGanador(int ganador, Object valorApostado)
-
-	def int ganancia()
 
 	def Resultado chequearApuesta(int ganador, Apuesta apuesta) {
 		if (esGanador(ganador, apuesta.valorApostado))
@@ -53,6 +47,11 @@ class ApuestaPleno extends TipoApuesta {
 	override esGanador(int ganador, Object valorApostado) {
 		ganador == valorApostado
 	}
+	
+	override getNombre() {
+		"Pleno"
+	}
+	
 }
 
 class ApuestaDocena extends TipoApuesta {
@@ -76,4 +75,9 @@ class ApuestaDocena extends TipoApuesta {
 		val max = (docena + 1) * 12
 		(min .. max).contains(ganador)
 	}
+	
+	override getNombre() {
+		"Docena"
+	}
+	
 }
